@@ -15,7 +15,7 @@ app.use(cookieParser());
 const verifyToken = (req, res, next) => {
     try {
         const token = req?.headers?.token;
-        console.log('from headers', token)
+        console.log('from headers', token);
         if (!token) {
             return res?.status(401)?.send({ message: 'forbidden access' })
         }
@@ -55,6 +55,7 @@ async function run() {
         // >>>>>>collections<<<<<<<<<<
         const database = client.db("todoDB");
         const userCollection = database.collection("users");
+        const todoCollection = database.collection("todos");
         // >>>>>>collections<<<<<<<<<<
 
         //  >>>>>>>>>>>>>>>>>>>>>>JWT related api<<<<<<<<<<<<<<
@@ -86,6 +87,21 @@ async function run() {
             }
         })
         //  >>>>>>>>>>>>>>>>>>>>>>users related api<<<<<<<<<<<<<<
+
+        //  >>>>>>>>>>>>>>>>>>>>>>todo related api<<<<<<<<<<<<<<
+        app.post('/todos', verifyToken, async (req, res) => {
+            try {
+                const todo = req?.body;
+                if (todo?.email !== req?.decoded?.email) {
+                    return res.status(401).send({ message: 'forbidden access' })
+                }
+                const result = await todoCollection.insertOne(todo);
+                res.send(result);
+            } catch (error) {
+                console.log(error)
+            }
+        })
+        //  >>>>>>>>>>>>>>>>>>>>>>todo related api<<<<<<<<<<<<<<
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
