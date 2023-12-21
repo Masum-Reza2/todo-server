@@ -101,6 +101,20 @@ async function run() {
                 console.log(error)
             }
         })
+
+        app.get('/todos/:email', verifyToken, async (req, res) => {
+            try {
+                const email = req?.params?.email;
+                if (email !== req?.decoded?.email) {
+                    return res.status(401).send({ message: 'forbidden access' })
+                }
+                const filter = { email: email };
+                const result = await todoCollection.find(filter).toArray();
+                res.send(result);
+            } catch (error) {
+                console.log(error)
+            }
+        })
         //  >>>>>>>>>>>>>>>>>>>>>>todo related api<<<<<<<<<<<<<<
 
         // Send a ping to confirm a successful connection
