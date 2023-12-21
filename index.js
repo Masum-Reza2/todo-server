@@ -37,6 +37,7 @@ const verifyToken = (req, res, next) => {
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mf3nl9y.mongodb.net/?retryWrites=true&w=majority`;
 
+
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
     serverApi: {
@@ -52,7 +53,7 @@ async function run() {
         await client.connect();
 
         // >>>>>>collections<<<<<<<<<<
-        const database = client.db("commerceDB");
+        const database = client.db("todoDB");
         const userCollection = database.collection("users");
         // >>>>>>collections<<<<<<<<<<
 
@@ -99,12 +100,12 @@ run().catch(console.dir);
 
 app.get('/', (req, res) => {
     try {
-        res.send('Commerce book server running!')
+        res.send('todo server running!')
     } catch (error) {
         console.log(error)
     }
 })
 
 app.listen(port, () => {
-    console.log(`Commerce book app listening on port ${port}`)
+    console.log(`todo app listening on port ${port}`)
 })
