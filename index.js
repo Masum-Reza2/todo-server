@@ -95,6 +95,21 @@ async function run() {
                 if (todo?.email !== req?.decoded?.email) {
                     return res.status(401).send({ message: 'forbidden access' })
                 }
+
+                // check previous
+                const check = { previousWorked: true }
+                const isExistpreviousWorked = await todoCollection.findOne(check);
+                if (isExistpreviousWorked) {
+                    const checkId = isExistpreviousWorked?._id
+                    const filter = { _id: checkId };
+                    const updateDoc = {
+                        $set: {
+                            previousWorked: false
+                        },
+                    };
+                    await todoCollection.updateOne(filter, updateDoc);
+                }
+
                 const result = await todoCollection.insertOne(todo);
                 res.send(result);
             } catch (error) {
@@ -131,6 +146,76 @@ async function run() {
             }
         })
 
+        app.get('/singleTodos/:id', verifyToken, async (req, res) => {
+            try {
+                const id = req?.params?.id;
+                const email = req?.query?.email;
+                if (email !== req?.decoded?.email) {
+                    return res.status(401).send({ message: 'forbidden access' })
+                }
+                const filter = { _id: new ObjectId(id) };
+                const result = await todoCollection.findOne(filter);
+                res.send(result);
+            } catch (error) {
+                console.log(error)
+            }
+        })
+
+        app.put('/todos/:id', verifyToken, async (req, res) => {
+            try {
+                const id = req?.params?.id;
+                const todo = req?.body;
+                if (todo?.email !== req?.decoded?.email) {
+                    return res.status(401).send({ message: 'forbidden access' })
+                }
+
+                // check previous
+                const check = { previousWorked: true }
+                const isExistpreviousWorked = await todoCollection.findOne(check);
+                if (isExistpreviousWorked) {
+                    const checkId = isExistpreviousWorked?._id
+                    const filter = { _id: checkId };
+                    const updateDoc = {
+                        $set: {
+                            previousWorked: false
+                        },
+                    };
+                    await todoCollection.updateOne(filter, updateDoc);
+                }
+
+                const filter = { _id: new ObjectId(id) }
+                const updateDoc = {
+                    $set: {
+                        ...todo
+                    },
+                };
+                const result = await todoCollection.updateOne(filter, updateDoc);
+                res.send(result);
+            } catch (error) {
+                console.log(error)
+            }
+        })
+
+        app.put('/makeCompleted/:id', verifyToken, async (req, res) => {
+            try {
+                const email = req?.query?.email;
+                if (email !== req?.decoded?.email) {
+                    return res.status(401).send({ message: 'forbidden access' })
+                }
+
+                const id = req?.params?.id;
+                const filter = { _id: new ObjectId(id) };
+                const updateDoc = {
+                    $set: {
+                        status: 'completed'
+                    },
+                };
+                const result = await todoCollection.updateOne(filter, updateDoc);
+                res.send(result);
+            } catch (error) {
+                console.log(error)
+            }
+        })
         //  >>>>>>>>>>>>>>>>>>>>>>todo related api<<<<<<<<<<<<<<
 
         // Send a ping to confirm a successful connection
