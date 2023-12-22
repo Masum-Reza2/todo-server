@@ -115,6 +115,22 @@ async function run() {
                 console.log(error)
             }
         })
+
+        app.delete('/todos/:id', verifyToken, async (req, res) => {
+            try {
+                const id = req?.params?.id;
+                const email = req?.query?.email;
+                if (email !== req?.decoded?.email) {
+                    return res.status(401).send({ message: 'forbidden access' })
+                }
+                const filter = { _id: new ObjectId(id) };
+                const result = await todoCollection.deleteOne(filter);
+                res.send(result);
+            } catch (error) {
+                console.log(error)
+            }
+        })
+
         //  >>>>>>>>>>>>>>>>>>>>>>todo related api<<<<<<<<<<<<<<
 
         // Send a ping to confirm a successful connection
