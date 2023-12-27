@@ -97,7 +97,7 @@ async function run() {
                 }
 
                 // check previous
-                const check = { previousWorked: true }
+                const check = { $and: [{ previousWorked: true }, { email: todo?.email }] }
                 const isExistpreviousWorked = await todoCollection.findOne(check);
                 if (isExistpreviousWorked) {
                     const checkId = isExistpreviousWorked?._id
@@ -170,7 +170,8 @@ async function run() {
                 }
 
                 // check previous
-                const check = { previousWorked: true }
+                // const check = { previousWorked: true }
+                const check = { $and: [{ previousWorked: true }, { email: todo?.email }] }
                 const isExistpreviousWorked = await todoCollection.findOne(check);
                 if (isExistpreviousWorked) {
                     const checkId = isExistpreviousWorked?._id
