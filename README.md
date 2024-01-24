@@ -14,5 +14,3 @@ ACCESS_TOKEN_SECRET=mas67dghj89shsgms67fsgkmgs45podqpwkdob90aghlAKSGT56</p>
 # Now backend is done. Let's move to frontend set up.
 
 # https://github.com/Masum-Reza2/todo-client
-
-https://github.com/Masum-Reza2/todo-server
