@@ -6,9 +6,11 @@
 - Then create a .env file in the root directory.
 - Then copy and paste the followings on .env file >>>
 
-<p>DB_USER=todoManager
-DB_PASS=ebCYfBjJfnRC8TIW
-ACCESS_TOKEN_SECRET=mas67dghj89shsgms67fsgkmgs45podqpwkdob90aghlAKSGT56</p>
+<div>
+<p>DB_USER=todoManager</p>
+<p>DB_PASS=ebCYfBjJfnRC8TIW</p>
+<p>ACCESS_TOKEN_SECRET=mas67dghj89shsgms67fsgkmgs45podqpwkdob90aghlAKSGT56</p>
+</div>
 - Run this command >>> npm run dev
 
 # Now backend is done. Let's move to frontend set up.
